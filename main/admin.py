@@ -6,4 +6,5 @@ class ContactAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'email', 'created_date')
     search_fields = ('name', 'email')
     date_hierarchy = 'created_date'
+    readonly_fields = ('created_date',)
 
