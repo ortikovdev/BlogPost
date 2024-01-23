@@ -11,3 +11,14 @@ class Contact(models.Model):
     def __str__(self):
         return self
 
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='feedback/')
+    message = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
