@@ -8,8 +8,8 @@
             <div class="col-lg-12">
                 <div class="banner_post_1 banner_post_bg_1">
                     <div class="banner_post_iner text-center">
-                        <a href="category.html"><h5> Creative & Design</h5></a>
-                        <a href="../article/single-blog.html"><h2>All said replenish years void <br>
+                        <a href=""><h5> Creative & Design</h5></a>
+                        <a href=""><h2>All said replenish years void <br>
                             kind say void </h2></a>
                         <p><span> By Michal</span> / March 30 , 2019</p>
                     </div>
@@ -17,7 +17,7 @@
                 <div class="banner_post_2 banner_post_bg_2">
                     <div class="banner_post_iner">
                         <a href="category.html"><h5> Creative & Design</h5></a>
-                        <a href="../article/single-blog.html"><h2>Behold given land one first face fish which all said
+                        <a href="{% url 'article:detail' 1 %}"><h2>Behold given land one first face fish which all said
                             male fruit void king saying</h2></a>
                         <p><span> By Michal</span> / March 30 , 2019</p>
                     </div>
@@ -32,157 +32,71 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="single_feature_post post_1">
-                    <img src="{% static 'img/feature_post/feature_post_1.png' %}" alt>
+                {% for object in articles %}
+                    <div class="single_feature_post post_1">
+                    <img src="{{ object.image.url }}" alt>
                     <div class="post_text_1 pr_30">
                         <h5>creative design</h5>
-                        <a href="../article/single-blog.html">
-                            <h3>Subdue lesser beast winged
-                                bearing meat tree one</h3>
+                        <a href="{% url 'article:detail' object.slug %}">
+                            <h3>{{ object.title }}</h3>
                         </a>
-                        <p><span> By Michal</span> / March 30 , 2019</p>
+                        <p><span> By {{ object.author }}</span> / {{ object.created_date|date:'F d, Y' }}</p>
                         <div class="post_icon">
                             <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
+                                <li><i class="ti-comment"></i>{{ object.comments.count }} Comment</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="single_feature_post post_1 d-block d-sm-none d-lg-block">
-                    <div class="post_text_1 pl_pr_30">
-                        <h5>Art & illustration</h5>
-                        <a href="../article/single-blog.html">
-                            <h3>Hath form you given fac one
-                                under behold night give</h3>
-                        </a>
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <img src="{% static 'img/feature_post/feature_post_2.png' %}" alt>
-                </div>
-                <div class="single_feature_post post_1">
-                    <img src="{% static 'img/feature_post/feature_post_3.png' %}" alt>
-                    <div class="post_text_1 pl_pr_30">
-                        <h5>creative design</h5>
-                        <a href="../article/single-blog.html">
-                            <h3>Greater whales morning firsts
-                                you moveth morning</h3>
-                        </a>
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 </section>
 
 
-<div class="border_top"></div>
-
-
-<section class="catagory_post">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 col-lg-4">
-                <div class="single_catagory_post post_2">
-                    <div class="category_post_img">
-                        <img src="{% static 'img/feature_post/feature_post_4.png' %}" alt>
-                        <a href="category.html" class="category_btn">abstract design</a>
-                    </div>
-                    <div class="post_text_1 pr_30">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Subdue lesser beast winged
-                                bearing meat tree one</h3>
-                        </a>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-                <div class="single_catagory_post post_2">
-                    <div class="category_post_img">
-                        <img src="{% static 'img/feature_post/feature_post_5.png' %}" alt>
-                        <a href="category.html" class="category_btn">illustration</a>
-                    </div>
-                    <div class="post_text_1 pr_30">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Subdue lesser beast winged
-                                bearing meat tree one</h3>
-                        </a>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-                <div class="single_catagory_post post_2 d-block d-sm-none d-lg-block">
-                    <div class="category_post_img">
-                        <img src="{% static 'img/feature_post/feature_post_6.png' %}" alt>
-                        <a href="category.html" class="category_btn">brand identity</a>
-                    </div>
-                    <div class="post_text_1 pr_30">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Subdue lesser beast winged
-                                bearing meat tree one</h3>
-                        </a>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<div class="border_top"></div>
+<!--<section class="catagory_post">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            {% for object in articles2 %}-->
+<!--            <div class="col-sm-6 col-lg-4">-->
+<!--                <div class="single_catagory_post post_2">-->
+<!--                    <div class="category_post_img">-->
+<!--                        <img src="{{ object.image.url }}" alt>-->
+<!--                        <a href="category.html" class="category_btn">abstract design</a>-->
+<!--                    </div>-->
+<!--                    <div class="post_text_1 pr_30">-->
+<!--                        <p><span> By Michal</span> / March 30 , 2019</p>-->
+<!--                        <a href="{% url 'article:detail' object.slug %}">-->
+<!--                            <h3>{{ object.title }}</h3>-->
+<!--                        </a>-->
+<!--                        <div class="post_icon">-->
+<!--                            <ul>-->
+<!--                                <li><i class="ti-comment"></i>{{ object.comments.count }} Comment</li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
 
 
 <section class="all_post section_padding">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
+
+                {% for object in articles %}
                 <div class="single_post media post_3">
                     <div class="single_post_img">
-                        <img src="{% static 'img/post/post_11.png' %}" alt>
-                        <a href="category.html" class="category_btn">Tours & travel</a>
+                        <img src="{{ object.image.url }}" alt>
+                        <a href="{% url 'main:category' %}" class="category_btn">Tours & travel</a>
                     </div>
                     <div class="post_text_1 media-body align-self-center">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
+                        <p><span> {{ object.author }}</span> / {{ object.created_date|date: 'F d, Y'}}</p>
                         <a href="../article/single-blog.html">
                             <h3>Called face there light this
                                 said wherein replenish sadin
@@ -197,94 +111,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="single_post media post_3">
-                    <div class="single_post_img">
-                        <img src="{% static 'img/post/post_12.png' %}" alt>
-                        <a href="category.html" class="category_btn">branding</a>
-                    </div>
-                    <div class="post_text_1 media-body align-self-center">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Called face there light this
-                                said wherein replenish sadin
-                                made green grass</h3>
-                        </a>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="single_post media post_3">
-                    <div class="single_post_img">
-                        <img src="{% static 'img/post/post_13.png' %}" alt>
-                        <a href="category.html" class="category_btn">digital art</a>
-                    </div>
-                    <div class="post_text_1 media-body align-self-center">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Called face there light this
-                                said wherein replenish sadin
-                                made green grass</h3>
-                        </a>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="single_post media post_3">
-                    <div class="single_post_img">
-                        <img src="{% static 'img/post/post_14.png' %}" alt>
-                        <a href="category.html" class="category_btn">abstract design</a>
-                    </div>
-                    <div class="post_text_1 media-body align-self-center">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Called face there light this
-                                said wherein replenish sadin
-                                made green grass</h3>
-                        </a>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="single_post media post_3">
-                    <div class="single_post_img">
-                        <img src="{% static 'img/post/post_15.png' %}" alt>
-                        <a href="category.html" class="category_btn">illustration</a>
-                    </div>
-                    <div class="post_text_1 media-body align-self-center">
-                        <p><span> By Michal</span> / March 30 , 2019</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Called face there light this
-                                said wherein replenish sadin
-                                made green grass</h3>
-                        </a>
-                        <div class="post_icon">
-                            <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+
                 <div class="load_btn text-center">
                     <a href="#" class="btn_1">LOADING MORE <i class="ti-angle-right"></i></a>
                 </div>
             </div>
+
             <div class="col-lg-4">
                 <div class="sidebar_widget">
                     <div class="sidebar_tittle">
@@ -304,42 +137,21 @@
                     <div class="sidebar_tittle">
                         <h3>Popular Feeds</h3>
                     </div>
+                    {% for object in articles%}
                     <div class="single_catagory_post post_2 single_border_bottom">
                         <div class="category_post_img">
-                            <img src="{% static 'img/sidebar/sidebar_1.png' %}" alt>
+                            <img src="{{ object.image.url }}">
                         </div>
                         <div class="post_text_1 pr_30">
-                            <p><span> By Michal</span> / March 30 , 2019</p>
+                            <p><span> By Michal</span> / {{ object.created_date|date:'F d, Y' }}</p>
                             <a href="../article/single-blog.html">
                                 <h3>Subdue lesser beast winged
                                     bearing meat tree one</h3>
                             </a>
                         </div>
                     </div>
-                    <div class="single_catagory_post post_2 single_border_bottom">
-                        <div class="category_post_img">
-                            <img src="{% static 'img/sidebar/sidebar_2.png' %}" alt>
-                        </div>
-                        <div class="post_text_1 pr_30">
-                            <p><span> By Michal</span> / March 30 , 2019</p>
-                            <a href="../article/single-blog.html">
-                                <h3>Subdue lesser beast winged
-                                    bearing meat tree one</h3>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="single_catagory_post post_2">
-                        <div class="category_post_img">
-                            <img src="{% static 'img/sidebar/sidebar_3.png' %}" alt>
-                        </div>
-                        <div class="post_text_1 pr_30">
-                            <p><span> By Michal</span> / March 30 , 2019</p>
-                            <a href="../article/single-blog.html">
-                                <h3>Subdue lesser beast winged
-                                    bearing meat tree one</h3>
-                            </a>
-                        </div>
-                    </div>
+                    {% endfor %}
+
                     <div class="sidebar_tittle">
                         <h3>Categories</h3>
                     </div>
@@ -368,6 +180,7 @@
                 </div>
             </div>
         </div>
+        {% include 'paginator.html' %}
     </div>
 </section>
 {% endblock %}

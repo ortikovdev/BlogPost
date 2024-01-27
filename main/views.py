@@ -4,12 +4,17 @@ from article.models import Article
 
 
 def home_page(request):
-    articles = Article.objects.order_by('-id')
+    articles = Article.objects.order_by('-id')[:3]
+    articles2 = Article.objects.order_by('-id')[3:9:]
+    # print(articles2)
     paginator = Paginator(articles, 3)
-    page_obj = paginator.get_page('page')
+    # page_obj = paginator.get_page('page')
+    page = request.GET.get('page')
     ctx = {
-        'articles': page_obj
+        'articles': articles,
+        'articles2': articles2,
     }
+
     return render(request, 'main/index.html', ctx)
 
 

@@ -3,7 +3,7 @@ from .models import (
     Category,
     Tag,
     Article,
-    SubArticle,
+    Content,
     Comment,
 )
 from django.contrib.admin.options import InlineModelAdmin
@@ -21,14 +21,14 @@ class TagAdminAdmin(admin.ModelAdmin):
     search_fields = ('name', )
 
 
-class SubArticleInlineAdmin(admin.StackedInline):
-    model = SubArticle
-    extra = 0
+class ContentInlineAdmin(admin.StackedInline):
+    model = Content
+    extra = 1
 
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    inlines = (SubArticleInlineAdmin, )
+    inlines = (ContentInlineAdmin, )
     list_display = ('id', 'category', 'title', )
     readonly_fields = ('slug', 'created_date', 'modified_date', )
     search_fields = ('title', )

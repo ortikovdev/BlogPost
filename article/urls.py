@@ -7,6 +7,6 @@ from .views import (
 app_name = 'article'
 urlpatterns = [
     path('list/', article_list_page, name='list'),
-    path('list/<slug:slug>/', single_blog_page, name='detail'),
+    path('detail/<slug:slug>/', single_blog_page, name='detail'),
 ]
 
