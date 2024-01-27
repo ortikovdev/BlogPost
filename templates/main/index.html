@@ -32,7 +32,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                {% for object in articles %}
+                {% for object in articles1 %}
                     <div class="single_feature_post post_1">
                     <img src="{{ object.image.url }}" alt>
                     <div class="post_text_1 pr_30">
@@ -93,29 +93,25 @@
                 <div class="single_post media post_3">
                     <div class="single_post_img">
                         <img src="{{ object.image.url }}" alt>
-                        <a href="{% url 'main:category' %}" class="category_btn">Tours & travel</a>
+                        <a href="{% url 'article:category' %}" class="category_btn">Tours & travel</a>
                     </div>
                     <div class="post_text_1 media-body align-self-center">
-                        <p><span> {{ object.author }}</span> / {{ object.created_date|date: 'F d, Y'}}</p>
-                        <a href="../article/single-blog.html">
-                            <h3>Called face there light this
-                                said wherein replenish sadin
-                                made green grass</h3>
+                        <p><span> {{ object.author }}</span> / {{ object.created_date }}</p>
+                        <a href="{% url 'article:detail' object.slug %}">
+                            <h3>{{ object.title }}</h3>
                         </a>
                         <div class="post_icon">
                             <ul>
-                                <li><i class="ti-comment"></i>2 Comment</li>
-                                <li><i class="ti-heart"></i>0 Like</li>
-                                <li><i class="ti-export"></i>Share</li>
+                                <li><i class="ti-comment"></i>{{ object.comments.count }} Comment</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
 
-                <div class="load_btn text-center">
-                    <a href="#" class="btn_1">LOADING MORE <i class="ti-angle-right"></i></a>
-                </div>
+<!--                <div class="load_btn text-center">-->
+<!--                    <a href="#" class="btn_1">LOADING MORE <i class="ti-angle-right"></i></a>-->
+<!--                </div>-->
             </div>
 
             <div class="col-lg-4">
@@ -137,16 +133,15 @@
                     <div class="sidebar_tittle">
                         <h3>Popular Feeds</h3>
                     </div>
-                    {% for object in articles%}
+                    {% for object in articles1 %}
                     <div class="single_catagory_post post_2 single_border_bottom">
                         <div class="category_post_img">
                             <img src="{{ object.image.url }}">
                         </div>
                         <div class="post_text_1 pr_30">
-                            <p><span> By Michal</span> / {{ object.created_date|date:'F d, Y' }}</p>
-                            <a href="../article/single-blog.html">
-                                <h3>Subdue lesser beast winged
-                                    bearing meat tree one</h3>
+                            <p><span> {{ object.author }}</span> / {{ object.created_date|date:'F d, Y' }}</p>
+                            <a href="{% url 'article:detail' object.slug %}">
+                                <h3>{{ object.title }}</h3>
                             </a>
                         </div>
                     </div>
@@ -157,12 +152,11 @@
                     </div>
                     <div class="single_catagory_item category">
                         <ul class="list-unstyled">
-                            <li><a href="../article/single-blog.html">Culture (12)</a></li>
-                            <li><a href="../article/single-blog.html">Creative Design (15)</a></li>
-                            <li><a href="../article/single-blog.html">Illustration (25)</a></li>
-                            <li><a href="../article/single-blog.html">Production (16)</a></li>
-                            <li><a href="../article/single-blog.html">Mangement (10)</a></li>
-                            <li><a href="../article/single-blog.html">Branding (15)</a></li>
+                            {% for category, item in category_counts.items %}
+
+                            <li><a href="{% url 'article:list' %}">{{ category }} ({{ item }})</a></li>
+
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="sidebar_tittle">
@@ -170,11 +164,11 @@
                     </div>
                     <div class="single_catagory_item tags">
                         <ul class="list-unstyled">
-                            <li><a href="../article/single-blog.html">Nature</a></li>
-                            <li><a href="../article/single-blog.html">business</a></li>
-                            <li><a href="../article/single-blog.html">tech</a></li>
-                            <li><a href="../article/single-blog.html">News</a></li>
-                            <li><a href="../article/single-blog.html">html</a></li>
+
+                            {% for tag in tags %}
+                            <li><a href="{% url 'article:list' %}">{{ tag.title }}</a></li>
+                            {% endfor %}
+
                         </ul>
                     </div>
                 </div>
