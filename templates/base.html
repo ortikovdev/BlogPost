@@ -83,6 +83,13 @@
 </script>
 </head>
 <body>
+
+{% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+{% endif %}
+
 {% include 'navbar.html' %}
 
 {% block content %}
@@ -117,3 +124,6 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+

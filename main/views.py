@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from article.models import Article, Category, Tag
+from .models import Contact
+from .form import ContactForm
+from django.contrib import messages
 
 
 def home_page(request):
@@ -32,9 +35,15 @@ def home_page(request):
 
 
 def contact_page(request):
-
+    form = ContactForm()
+    if request.method == "POST":
+        form = ContactForm(request.POST, request)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thank you for contacting")
+            return redirect('.')
     ctx = {
-
+        "form": form,
     }
     return render(request, 'main/contact.html', ctx)
 
