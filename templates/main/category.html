@@ -50,7 +50,7 @@
                     <form action="#">
                         <div class="form-group">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Search Keyword"
+                                <input name="q" type="text" class="form-control" placeholder="Search Keyword"
                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="ti-search"></i></button>
@@ -80,9 +80,9 @@
                     </div>
                     <div class="single_catagory_item category">
                         <ul class="list-unstyled">
-                            {% for category, item in category_counts.items %}
+                            {% for category in categories %}
 
-                            <li><a href="{% url 'article:list' %}">{{ category }} ({{ item }})</a></li>
+                            <li><a href="{% url 'article:category' %}?cat={{ category.title }}">{{ category.title }} ({{ category.articles.count }})</a></li>
 
                             {% endfor %}
                         </ul>
@@ -94,7 +94,7 @@
                         <ul class="list-unstyled">
 
                             {% for tag in tags %}
-                            <li><a href="{% url 'article:list' %}">{{ tag.title }}</a></li>
+                            <li><a href="{% url 'article:list' %}?tag={{ tag.title }}">{{ tag.title }}</a></li>
                             {% endfor %}
 
                         </ul>

@@ -84,10 +84,8 @@
                     </div>
                     <div class="single_catagory_item category">
                         <ul class="list-unstyled">
-                            {% for category, item in categories_count.items %}
-
-                            <li><a href="{% url 'article:list' %}">{{ category }} ({{ item }})</a></li>
-
+                            {% for category in categories %}
+                            <li><a href="{% url 'article:category' %}?cat={{ category.title }}">{{ category.title }} ({{ category.articles.count }})</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -98,7 +96,7 @@
                         <ul class="list-unstyled">
 
                             {% for tag in tags %}
-                            <li><a href="{% url 'article:list' %}">{{ tag.title }}</a></li>
+                            <li><a href="{% url 'article:category' %}?tag={{ tag.title }}">{{ tag.title }}</a></li>
                             {% endfor %}
 
                         </ul>

@@ -34,9 +34,10 @@
             <div class="col-lg-12">
                 {% for object in articles1 %}
                     <div class="single_feature_post post_1">
-                    <img src="{{ object.image.url }}" alt>
+                        {% if forloop.counter|divisibleby:2 %}
+
                     <div class="post_text_1 pr_30">
-                        <h5>creative design</h5>
+                        <h5>{{ object.category }}</h5>
                         <a href="{% url 'article:detail' object.slug %}">
                             <h3>{{ object.title }}</h3>
                         </a>
@@ -47,6 +48,22 @@
                             </ul>
                         </div>
                     </div>
+                        <img src="{{ object.image.url }}" alt>
+                        {% else %}
+                        <img src="{{ object.image.url }}" alt>
+                        <div class="post_text_1 pr_30">
+                        <h5>{{ object.category }}</h5>
+                        <a href="{% url 'article:detail' object.slug %}">
+                            <h3>{{ object.title }}</h3>
+                        </a>
+                        <p><span> By {{ object.author }}</span> / {{ object.created_date|date:'F d, Y' }}</p>
+                        <div class="post_icon">
+                            <ul>
+                                <li><i class="ti-comment"></i>{{ object.comments.count }} Comment</li>
+                            </ul>
+                        </div>
+                    </div>
+                        {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -93,7 +110,7 @@
                 <div class="single_post media post_3">
                     <div class="single_post_img">
                         <img src="{{ object.image.url }}" alt>
-                        <a href="{% url 'article:category' %}" class="category_btn">Tours & travel</a>
+                        <a href="{% url 'article:category' %}" class="category_btn">{{ object.category }}</a>
                     </div>
                     <div class="post_text_1 media-body align-self-center">
                         <p><span> {{ object.author }}</span> / {{ object.created_date }}</p>
@@ -153,9 +170,9 @@
                     </div>
                     <div class="single_catagory_item category">
                         <ul class="list-unstyled">
-                            {% for category, item in category_counts.items %}
+                            {% for category in categories %}
 
-                            <li><a href="{% url 'article:list' %}">{{ category }} ({{ item }})</a></li>
+                            <li><a href="{% url 'article:list' %}">{{ category }} ({{ category.articles.count }})</a></li>
 
                             {% endfor %}
                         </ul>

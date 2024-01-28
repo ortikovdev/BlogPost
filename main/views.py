@@ -12,11 +12,7 @@ def home_page(request):
     articles2 = Article.objects.order_by('-id')[3:9:]
     categories = Category.objects.all()
     tags = Tag.objects.all()
-    category_counts = {}
 
-    for category in categories:
-        count = Article.objects.filter(category=category).count()
-        category_counts[category.title] = count
     # for i in
     # print(articles2)
     paginator = Paginator(articles1, 3)
@@ -28,7 +24,6 @@ def home_page(request):
         'articles2': articles2,
         'categories': categories,
         'tags': tags,
-        'category_counts': category_counts,
     }
 
     return render(request, 'main/index.html', ctx)
