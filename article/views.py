@@ -2,7 +2,7 @@ from django.db.models import Count, Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from article.form import CommentForm
-from article.models import Article, Tag, Category, Author
+from article.models import Article, Tag, Category, Author, Comment
 from django.contrib import messages
 
 
@@ -25,14 +25,20 @@ def single_blog_page(request, slug):
     object_list = Article.objects.order_by('-id')
     next_post = Article.objects.filter(slug__gt=slug).first()
     prev_post = Article.objects.filter(slug__lt=slug).last()
+    parent_id = request.POST.get('parent_id')
     form = CommentForm()
     if request.method == 'POST':
-        form = CommentForm(request.POST)
+        form = CommentForm(request.POST, request)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.article = article
+            if parent_id:
+                obj.parent_comment = Comment.objects.get(id=parent_id)
+            obj.save()
             messages.success(request, 'Your comment was successfully added!')
             return redirect('.')
     author = request.GET.get('authors')
+    comments = Comment.objects.filter(article=article).order_by('-id')
     ctx = {
         "object": article,
         "object_list": object_list,
@@ -40,6 +46,7 @@ def single_blog_page(request, slug):
         "prev_post": prev_post,
         "form": form,
         "author": author,
+        "comments": comments,
     }
     return render(request, 'article/single-blog.html', ctx)
 

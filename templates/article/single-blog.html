@@ -120,26 +120,38 @@
 
                 </div>
                 <div class="comments-area">
-                    <h4>05 Comments</h4>
+
+                    <h4>{{ comments.count }} Comment(s)</h4>
+                    {% for comment in comments %}
+
                     <div class="comment-list">
                         <div class="single-comment justify-content-between d-flex">
                             <div class="user justify-content-between d-flex">
+                                {% if comment.image %}
                                 <div class="thumb">
-                                    <img src="{% static 'img/comment/comment_1.png' %}" alt>
+                                    <img src="{{ comment.image.url }}" alt>
                                 </div>
+                                {% endif %}
                                 <div class="desc">
                                     <p class="comment">
-                                        Multiply sea night grass fourth day sea lesser rule open subdue female fill
-                                        which them
-                                        Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
+                                        {{ comment.message }}
                                     </p>
                                     <div class="d-flex justify-content-between">
+                                        {% if comment.name %}
                                         <div class="d-flex align-items-center">
                                             <h5>
-                                                <a href="#">Emilly Blunt</a>
+                                                <a href="#">{{ comment.name }}</a>
                                             </h5>
-                                            <p class="date">December 4, 2017 at 3:12 pm </p>
+                                            <p class="date">{{ comment.created_date }} </p>
                                         </div>
+                                        {% else %}
+                                        <div class="d-flex align-items-center">
+                                            <h5>
+                                                <a href="#">Unknown User</a>
+                                            </h5>
+                                            <p class="date">{{ comment.created_date }} </p>
+                                        </div>
+                                        {% endif %}
                                         <div class="reply-btn">
                                             <a href="#" class="btn-reply text-uppercase">reply</a>
                                         </div>
@@ -148,60 +160,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="comment-list">
-                        <div class="single-comment justify-content-between d-flex">
-                            <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                    <img src="{% static 'img/comment/comment_2.png' %}" alt>
-                                </div>
-                                <div class="desc">
-                                    <p class="comment">
-                                        Multiply sea night grass fourth day sea lesser rule open subdue female fill
-                                        which them
-                                        Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <h5>
-                                                <a href="#">Emilly Blunt</a>
-                                            </h5>
-                                            <p class="date">December 4, 2017 at 3:12 pm </p>
-                                        </div>
-                                        <div class="reply-btn">
-                                            <a href="#" class="btn-reply text-uppercase">reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment-list">
-                        <div class="single-comment justify-content-between d-flex">
-                            <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                    <img src="{% static 'img/comment/comment_3.png' %}" alt>
-                                </div>
-                                <div class="desc">
-                                    <p class="comment">
-                                        Multiply sea night grass fourth day sea lesser rule open subdue female fill
-                                        which them
-                                        Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <h5>
-                                                <a href="#">Emilly Blunt</a>
-                                            </h5>
-                                            <p class="date">December 4, 2017 at 3:12 pm </p>
-                                        </div>
-                                        <div class="reply-btn">
-                                            <a href="#" class="btn-reply text-uppercase">reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
+
                 </div>
                 <div class="comment-form">
                     <h4>Leave a Reply</h4>
