@@ -26,10 +26,21 @@ class Tag(models.Model):
         return self.title
 
 
+class Author(models.Model):
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='articles/', null=True, blank=True)
+    email = models.EmailField(null=True, blank=True, max_length=255)
+    description = models.TextField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Article(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='articles')
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True, related_name='authors')
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     slug = models.SlugField(editable=False, null=True, blank=True)
     image = models.ImageField(upload_to='articles/')
     tags = models.ManyToManyField(Tag)
@@ -51,6 +62,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='articles/', null=True, blank=True)
     message = models.TextField()
+    email = models.EmailField(null=True, blank=True, max_length=255)
     created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
@@ -60,6 +72,7 @@ class Comment(models.Model):
         if self.image:
             return mark_safe(f'<a href="{self.image.url}"><img src="{self.image.url}" width="50" hight="50"></a>')
         return '-'
+
 
 
 def article_pre_save(sender, instance, *args, **kwargs):

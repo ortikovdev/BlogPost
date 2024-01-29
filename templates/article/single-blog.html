@@ -23,65 +23,33 @@
             <div class="col-lg-8 posts-list">
                 <div class="single-post">
                     <div class="feature-img">
-                        <img class="img-fluid" src="{% static 'img/blog/single_blog_1.png' %}" alt>
+                        <img class="img-fluid" src="{{ object.image.url }}" alt>
                     </div>
                     <div class="blog_details">
-                        <h2>Second divided from form fish beast made every of seas
-                            all gathered us saying he our
-                        </h2>
+                        <h2>{{ object.title }}</h2>
                         <ul class="blog-info-link mt-3 mb-4">
-                            <li><a href="#"><i class="far fa-user"></i> Travel, Lifestyle</a></li>
-                            <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
+                            <li><a href="#"><i class="far fa-user"></i>{{ object.category }}</a></li>
+                            <li><a href="#"><i class="far fa-comments"></i> {{ object.comments.count }} Comments</a>
+                            </li>
                         </ul>
-                        <p class="excert">
-                            MCSE boot camps have its supporters and its detractors. Some people do not understand why
-                            you
-                            should have to spend money on boot camp when you can get the MCSE study materials yourself
-                            at a
-                            fraction of the camp price. However, who has the willpower
-                        </p>
-                        <p>
-                            MCSE boot camps have its supporters and its detractors. Some people do not understand why
-                            you
-                            should have to spend money on boot camp when you can get the MCSE study materials yourself
-                            at a
-                            fraction of the camp price. However, who has the willpower to actually sit through a
-                            self-imposed MCSE training. who has the willpower to actually
-                        </p>
+                        {% for article_content in object.contents.all %}
+                        {% if article_content.is_quote %}
                         <div class="quote-wrapper">
                             <div class="quotes">
-                                MCSE boot camps have its supporters and its detractors. Some people do not understand
-                                why you
-                                should have to spend money on boot camp when you can get the MCSE study materials
-                                yourself at
-                                a fraction of the camp price. However, who has the willpower to actually sit through a
-                                self-imposed MCSE training.
+                                {{ article_content.content|safe }}
                             </div>
                         </div>
-                        <p>
-                            MCSE boot camps have its supporters and its detractors. Some people do not understand why
-                            you
-                            should have to spend money on boot camp when you can get the MCSE study materials yourself
-                            at a
-                            fraction of the camp price. However, who has the willpower
-                        </p>
-                        <p>
-                            MCSE boot camps have its supporters and its detractors. Some people do not understand why
-                            you
-                            should have to spend money on boot camp when you can get the MCSE study materials yourself
-                            at a
-                            fraction of the camp price. However, who has the willpower to actually sit through a
-                            self-imposed MCSE training. who has the willpower to actually
-                        </p>
+                        {% else %}
+                        <p>{{ article_content.content|safe }}</p>
+                        {% endif %}
+                        {% endfor %}
+
                     </div>
                 </div>
                 <div class="navigation-top">
                     <div class="d-sm-flex justify-content-between text-center">
-                        <p class="like-info"><span class="align-middle"><i class="far fa-heart"></i></span> Lily and 4
-                            people like this</p>
-                        <div class="col-sm-4 text-center my-2 my-sm-0">
+                        <p class="like-info"><span class="align-middle"><i class="far fa-heart"></i></span>Lily</p>
 
-                        </div>
                         <ul class="social-icons">
                             <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                             <li><a href="#"><i class="fab fa-twitter"></i></a></li>
@@ -91,10 +59,12 @@
                     </div>
                     <div class="navigation-area">
                         <div class="row">
+
                             <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                                {% if prev_post %}
                                 <div class="thumb">
                                     <a href="#">
-                                        <img class="img-fluid" src="{% static 'img/post/preview.png' %}" alt>
+                                        <img class="img-fluid" src="{{ prev_post.image.url }}" alt>
                                     </a>
                                 </div>
                                 <div class="arrow">
@@ -104,44 +74,50 @@
                                 </div>
                                 <div class="detials">
                                     <p>Prev Post</p>
-                                    <a href="#">
-                                        <h4>Space The Final Frontier</h4>
+                                    <a href="{% url 'article:detail' prev_post.slug %}">
+                                        <h4>{{ prev_post.title|slice:"20" }}</h4>
                                     </a>
                                 </div>
+                                {% endif %}
                             </div>
+
+
                             <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                                {% if next_post %}
                                 <div class="detials">
                                     <p>Next Post</p>
                                     <a href="#">
-                                        <h4>Telescopes 101</h4>
+                                        <h4>{{ next_post.title|slice:"20" }}</h4>
                                     </a>
                                 </div>
                                 <div class="arrow">
-                                    <a href="#">
+                                    <a href="{% url 'article:detail' next_post.slug %}">
                                         <span class="text-white ti-arrow-right"></span>
                                     </a>
                                 </div>
                                 <div class="thumb">
-                                    <a href="#">
-                                        <img class="img-fluid" src="{% static 'img/post/next.png' %}" alt>
+                                    <a href="{% url 'article:detail' next_post.slug %}">
+                                        <img class="img-fluid" src="{{ next_post.image.url }}" alt>
                                     </a>
                                 </div>
+                                {% endif %}
                             </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="blog-author">
+
                     <div class="media align-items-center">
-                        <img src="{% static 'img/blog/author.png' %}" alt>
+                        <img src="{{ object.author.image.url }}" alt>
                         <div class="media-body">
                             <a href="#">
-                                <h4>Harvard milan</h4>
+                                <h4>{{ object.author.name }}</h4>
                             </a>
-                            <p>Second divided from form fish beast made. Every of seas all gathered use saying you're,
-                                he
-                                our dominion twon Second divided from</p>
+                            <p>{{ object.author.description }}</p>
                         </div>
                     </div>
+
                 </div>
                 <div class="comments-area">
                     <h4>05 Comments</h4>
@@ -230,33 +206,31 @@
                 <div class="comment-form">
                     <h4>Leave a Reply</h4>
                     <form class="form-contact comment_form" action="#" id="commentForm">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-                                              placeholder="Write Comment"></textarea>
+                                    {{ form.message }}
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <input class="form-control" name="name" id="name" type="text" placeholder="Name">
+                                    {{ form.name }}
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <input class="form-control" name="email" id="email" type="email"
-                                           placeholder="Email">
+                                    {{ form.email }}
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <input class="form-control" name="website" id="website" type="text"
-                                           placeholder="Website">
+                                    {{ form.image }}
                                 </div>
                             </div>
                         </div>
                         <div class="load_btn">
-                            <a href="#" class="btn_1">SUBMIT <i class="ti-angle-right"></i></a>
+                            <input type="submit" class="btn_1" value="SUBMIT"> <i class="ti-angle-right"></i>
                         </div>
                     </form>
                 </div>
@@ -269,7 +243,7 @@
                     <form action="#">
                         <div class="form-group">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Search Keyword"
+                                <input name="q" type="text" class="form-control" placeholder="Search Keyword"
                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="ti-search"></i></button>
@@ -280,53 +254,30 @@
                     <div class="sidebar_tittle">
                         <h3>Popular Feeds</h3>
                     </div>
+                    {% for object in object_list %}
                     <div class="single_catagory_post post_2 single_border_bottom">
                         <div class="category_post_img">
-                            <img src="{% static 'img/sidebar/sidebar_1.png' %}" alt>
+                            <img src="{{ object.image.url }}">
                         </div>
                         <div class="post_text_1 pr_30">
-                            <p><span> By Michal</span> / March 30 , 2019</p>
-                            <a href="single-blog.html">
-                                <h3>Subdue lesser beast winged
-                                    bearing meat tree one</h3>
+                            <p><span> {{ object.author }}</span> / {{ object.created_date|date:'F d, Y' }}</p>
+                            <a href="{% url 'article:detail' object.slug %}">
+                                <h3>{{ object.title }}</h3>
                             </a>
                         </div>
                     </div>
-                    <div class="single_catagory_post post_2 single_border_bottom">
-                        <div class="category_post_img">
-                            <img src="{% static 'img/sidebar/sidebar_2.png' %}" alt>
-                        </div>
-                        <div class="post_text_1 pr_30">
-                            <p><span> By Michal</span> / March 30 , 2019</p>
-                            <a href="single-blog.html">
-                                <h3>Subdue lesser beast winged
-                                    bearing meat tree one</h3>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="single_catagory_post post_2">
-                        <div class="category_post_img">
-                            <img src="{% static 'img/sidebar/sidebar_3.png' %}" alt>
-                        </div>
-                        <div class="post_text_1 pr_30">
-                            <p><span> By Michal</span> / March 30 , 2019</p>
-                            <a href="single-blog.html">
-                                <h3>Subdue lesser beast winged
-                                    bearing meat tree one</h3>
-                            </a>
-                        </div>
-                    </div>
+                    {% endfor %}
+
                     <div class="sidebar_tittle">
                         <h3>Categories</h3>
                     </div>
                     <div class="single_catagory_item category">
                         <ul class="list-unstyled">
-                            <li><a href="single-blog.html">Culture (12)</a></li>
-                            <li><a href="single-blog.html">Creative Design (15)</a></li>
-                            <li><a href="single-blog.html">Illustration (25)</a></li>
-                            <li><a href="single-blog.html">Production (16)</a></li>
-                            <li><a href="single-blog.html">Mangement (10)</a></li>
-                            <li><a href="single-blog.html">Branding (15)</a></li>
+                            {% for category in categories %}
+
+                            <li><a href="{% url 'article:category' %}?cat={{ category.title }}">{{ category.title }} ({{ category.articles.count }})</a></li>
+
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="sidebar_tittle">
@@ -334,11 +285,11 @@
                     </div>
                     <div class="single_catagory_item tags">
                         <ul class="list-unstyled">
-                            <li><a href="single-blog.html">Nature</a></li>
-                            <li><a href="single-blog.html">business</a></li>
-                            <li><a href="single-blog.html">tech</a></li>
-                            <li><a href="single-blog.html">News</a></li>
-                            <li><a href="single-blog.html">html</a></li>
+
+                            {% for tag in tags %}
+                            <li><a href="{% url 'article:list' %}?tag={{ tag.title }}">{{ tag.title }}</a></li>
+                            {% endfor %}
+
                         </ul>
                     </div>
                 </div>

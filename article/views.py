@@ -1,13 +1,15 @@
 from django.db.models import Count, Q
-from django.shortcuts import render, get_object_or_404
-from article.models import Article, Tag, Category
+from django.shortcuts import render, get_object_or_404, redirect
+
+from article.form import CommentForm
+from article.models import Article, Tag, Category, Author
+from django.contrib import messages
 
 
 def article_list_page(request):
     object_list = Article.objects.order_by('-id')
     top_articles = Article.objects.annotate(comment_count=Count('comments')).order_by('-id')[:3]
     categories = Category.objects.all()
-    print(categories)
     tags = Tag.objects.all()
     ctx = {
         "object_list": object_list,
@@ -20,8 +22,24 @@ def article_list_page(request):
 
 def single_blog_page(request, slug):
     article = get_object_or_404(Article, slug=slug)
+    object_list = Article.objects.order_by('-id')
+    next_post = Article.objects.filter(slug__gt=slug).first()
+    prev_post = Article.objects.filter(slug__lt=slug).last()
+    form = CommentForm()
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your comment was successfully added!')
+            return redirect('.')
+    author = request.GET.get('authors')
     ctx = {
         "object": article,
+        "object_list": object_list,
+        "next_post": next_post,
+        "prev_post": prev_post,
+        "form": form,
+        "author": author,
     }
     return render(request, 'article/single-blog.html', ctx)
 
