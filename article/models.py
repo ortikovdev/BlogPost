@@ -59,7 +59,7 @@ class Content(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True, default='Unknown user')
     image = models.ImageField(upload_to='articles/', null=True, blank=True)
     message = models.TextField()
     email = models.EmailField(null=True, blank=True, max_length=255)

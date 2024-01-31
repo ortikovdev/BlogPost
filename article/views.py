@@ -20,35 +20,69 @@ def article_list_page(request):
     return render(request, 'article/archive.html', ctx)
 
 
-def single_blog_page(request, slug):
-    article = get_object_or_404(Article, slug=slug)
-    object_list = Article.objects.order_by('-id')
-    next_post = Article.objects.filter(slug__gt=slug).first()
-    prev_post = Article.objects.filter(slug__lt=slug).last()
-    parent_id = request.POST.get('parent_id')
+# def single_blog_page(request, slug):
+#     article = get_object_or_404(Article, slug=slug)
+#     object_list = Article.objects.order_by('-id')
+#     next_post = Article.objects.filter(slug__gt=slug).first()
+#     prev_post = Article.objects.filter(slug__lt=slug).last()
+#     parent_id = request.POST.get('parent_id')
+#     form = CommentForm()
+#     if request.method == 'POST':
+#         print(request.POST)
+#         obj = CommentForm(request.POST, request.FILES)
+#         if obj.is_valid():
+#             obj = form.save(commit=False)
+#             obj.article = article
+#             obj.save()
+#             messages.success(request, 'Your comment was successfully added!')
+#             return redirect('.')
+#     author = request.GET.get('authors')
+#     comments = Comment.objects.filter(article_id=article.id).order_by('-id')
+#     print(comments)
+#     ctx = {
+#         "object": article,
+#         "object_list": object_list,
+#         "next_post": next_post,
+#         "prev_post": prev_post,
+#         "form": form,
+#         "author": author,
+#         "comments": comments,
+#     }
+#     return render(request, 'article/single-blog.html', ctx)
+
+
+def single_blog_page(request, slug, *args, **kwargs):
     form = CommentForm()
-    if request.method == 'POST':
-        form = CommentForm(request.POST, request)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.article = article
-            if parent_id:
-                obj.parent_comment = Comment.objects.get(id=parent_id)
-            obj.save()
-            messages.success(request, 'Your comment was successfully added!')
-            return redirect('.')
-    author = request.GET.get('authors')
-    comments = Comment.objects.filter(article=article).order_by('-id')
-    ctx = {
-        "object": article,
+    article = get_object_or_404(Article, slug=slug)
+    object_list = Article.objects.order_by('-id')[:3]
+    tags = Tag.objects.order_by("-id")
+    categories = Category.objects.order_by("-id")
+    comments = Comment.objects.filter(article_id=article.id)
+    # cid = request.GET.get('cid')
+    if request.method == "POST":
+        comment = CommentForm(request.POST, request.FILES)
+        if comment.is_valid():
+            comment = comment.save(commit=False)
+            comment.article = article
+            # comment.parent_id = cid
+            comment.save()
+            messages.success(request, 'Comment sent successfully!')
+            return redirect(".")
+
+    next = Article.objects.filter(pk__gt=article.pk).order_by('pk').first()
+    previous = Article.objects.filter(pk__lt=article.pk).order_by('-pk').first()
+
+    context = {
+        'object': article,
         "object_list": object_list,
-        "next_post": next_post,
-        "prev_post": prev_post,
-        "form": form,
-        "author": author,
-        "comments": comments,
+        'tags': tags,
+        'categories': categories,
+        'form': form,
+        'next_post': next,
+        'prev_post': previous,
+        'comments': comments,
     }
-    return render(request, 'article/single-blog.html', ctx)
+    return render(request, 'article/single-blog.html', context)
 
 
 def category_page(request):

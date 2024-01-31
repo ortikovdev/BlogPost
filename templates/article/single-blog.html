@@ -131,6 +131,10 @@
                                 <div class="thumb">
                                     <img src="{{ comment.image.url }}" alt>
                                 </div>
+                                {% else %}
+                                <div class="thumb">
+                                    <img src="{% static 'img/user.jpg' %}" alt>
+                                </div>
                                 {% endif %}
                                 <div class="desc">
                                     <p class="comment">
@@ -165,7 +169,7 @@
                 </div>
                 <div class="comment-form">
                     <h4>Leave a Reply</h4>
-                    <form class="form-contact comment_form" action="#" id="commentForm">
+                    <form method="post" class="form-contact comment_form" id="commentForm" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-12">
