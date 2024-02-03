@@ -57,17 +57,17 @@ def single_blog_page(request, slug, *args, **kwargs):
     object_list = Article.objects.order_by('-id')[:3]
     tags = Tag.objects.order_by("-id")
     categories = Category.objects.order_by("-id")
-    comments = Comment.objects.filter(article_id=article.id)
-    # cid = request.GET.get('cid')
+    comments = Comment.objects.filter(article_id=article.id, top_level_comment_id__isnull=True)
+    cid = request.GET.get('cid')
     if request.method == "POST":
         comment = CommentForm(request.POST, request.FILES)
         if comment.is_valid():
             comment = comment.save(commit=False)
             comment.article = article
-            # comment.parent_id = cid
+            comment.parent_id = cid
             comment.save()
             messages.success(request, 'Comment sent successfully!')
-            return redirect(".")
+            return redirect(f".#comments-{cid}")
 
     next = Article.objects.filter(pk__gt=article.pk).order_by('pk').first()
     previous = Article.objects.filter(pk__lt=article.pk).order_by('-pk').first()

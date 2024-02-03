@@ -41,7 +41,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'article', 'message', 'name', 'get_image', 'created_date')
+    list_display = ('id', 'article', 'message', 'name', 'get_image', 'created_date', 'top_level_comment_id')
     search_fields = ('name', 'article__title')
     readonly_fields = ('created_date',)
     date_hierarchy = 'created_date'

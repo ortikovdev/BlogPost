@@ -122,54 +122,77 @@
                 <div class="comments-area">
 
                     <h4>{{ comments.count }} Comment(s)</h4>
-                    {% for comment in comments %}
+                    {% for comment in comments|dictsortreversed:"id" %}
+                        {% if not comment.top_level_comment_id %}
+                            <div class="comment-list">
+                                <div class="single-comment justify-content-between d-flex">
+                                    <div class="user justify-content-between d-flex">
 
-                    <div class="comment-list">
-                        <div class="single-comment justify-content-between d-flex">
-                            <div class="user justify-content-between d-flex">
-                                {% if comment.image %}
-                                <div class="thumb">
-                                    <img src="{{ comment.image.url }}" alt>
-                                </div>
-                                {% else %}
-                                <div class="thumb">
-                                    <img src="{% static 'img/user.jpg' %}" alt>
-                                </div>
-                                {% endif %}
-                                <div class="desc">
-                                    <p class="comment">
-                                        {{ comment.message }}
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        {% if comment.name %}
-                                        <div class="d-flex align-items-center">
-                                            <h5>
-                                                <a href="#">{{ comment.name }}</a>
-                                            </h5>
-                                            <p class="date">{{ comment.created_date }} </p>
-                                        </div>
-                                        {% else %}
-                                        <div class="d-flex align-items-center">
-                                            <h5>
-                                                <a href="#">Unknown User</a>
-                                            </h5>
-                                            <p class="date">{{ comment.created_date }} </p>
-                                        </div>
-                                        {% endif %}
-                                        <div class="reply-btn">
-                                            <a href="#" class="btn-reply text-uppercase">reply</a>
-                                        </div>
-                                    </div>
+                                            <div class="thumb">
+                                                {% if comment.image %}
+                                                <img src="{{ comment.image.url }}" alt>
+                                                {% else %}
+                                                <img src="{% static 'img/user.jpg' %}" alt>
+                                                {% endif %}
+                                            </div>
+
+                                        <div class="desc">
+                                            <p class="comment">
+                                                {{ comment.message }}
+                                            </p>
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <h5>
+                                                        <a href="#">{{ comment.name }}</a>
+                                                    </h5>
+                                                    <p class="date">{{ comment.created_date|date:"F d, Y \a\t h:m A" }} </p>
+                                                </div>
+                                                <div class="reply-btn">
+                                                    <a href="?cid={{ comment.id }}#commentForm" id="comment-{{ comment.id }}" class="btn-reply text-uppercase">reply</a>
+                                                </div>
+                                            </div>
+                                            {% if comment.children %}
+                                            {% for child in comment.children %}
+                                            <div style="width: 90%; margin-left: 10%">
+                                                <div class="thumb">
+                                                <img src="{% if child.image %}{{ child.image.url }}{% else %}{% static 'img/user.jpg' %}{% endif %}" alt>
+                                            </div>
+
+                                            <div class="desc">
+                                                <p class="comment">
+                                                    {{ child.message }}
+                                                </p>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex align-items-center">
+                                                        <h5>
+                                                            <a href="#">{{ child.name }} -> {{ child.parent.name }}</a>
+                                                        </h5>
+                                                        <p class="date">{{ child.created_date|date:"F d, Y \a\t h:m A" }} </p>
+                                                    </div>
+                                                    <div class="reply-btn">
+                                                        <a href="?cid={{child.id}}#commentForm"
+                                                           id="comment-{{child.id}}"
+                                                           class="btn-reply text-uppercase">reply</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+
+
+                                            {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
+                        {% endif %}
                     {% endfor %}
 
                 </div>
                 <div class="comment-form">
                     <h4>Leave a Reply</h4>
-                    <form method="post" class="form-contact comment_form" id="commentForm" enctype="multipart/form-data">
+                    <form method="post" class="form-contact comment_form" id="commentForm"
+                          enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-12">
@@ -239,7 +262,8 @@
                         <ul class="list-unstyled">
                             {% for category in categories %}
 
-                            <li><a href="{% url 'article:category' %}?cat={{ category.title }}">{{ category.title }} ({{ category.articles.count }})</a></li>
+                            <li><a href="{% url 'article:category' %}?cat={{ category.title }}">{{ category.title }} ({{
+                                category.articles.count }})</a></li>
 
                             {% endfor %}
                         </ul>

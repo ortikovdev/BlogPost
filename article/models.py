@@ -38,6 +38,7 @@ class Author(models.Model):
 
 
 class Article(models.Model):
+    objects = None
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='articles')
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True, related_name='authors')
     title = models.CharField(max_length=255)
@@ -59,11 +60,21 @@ class Content(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
-    name = models.CharField(max_length=255, null=True, blank=True, default='Unknown user')
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+    top_level_comment_id = models.IntegerField(null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='articles/', null=True, blank=True)
     message = models.TextField()
     email = models.EmailField(null=True, blank=True, max_length=255)
     created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+
+    @property
+    def children(self, *args, **kwargs):
+        if not self.parent:
+            return Comment.objects.filter(top_level_comment_id=self.id).order_by("-id")
+        else:
+            return None
 
     def __str__(self):
         return self.name
@@ -74,10 +85,20 @@ class Comment(models.Model):
         return '-'
 
 
-
 def article_pre_save(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = slugify(instance.title+ "-" +timezone.now().strftime('%Y/%m/%d'))
+        instance.slug = slugify(instance.title + "-" + timezone.now().strftime('%Y/%m/%d'))
 
 
 pre_save.connect(article_pre_save, sender=Article)
+
+
+def comment_pre_save(sender, instance, *args, **kwargs):
+    if instance.parent:
+        if instance.parent.top_level_comment_id:
+            instance.top_level_comment_id = instance.parent.top_level_comment_id
+        else:
+            instance.top_level_comment_id = instance.parent.id
+
+
+pre_save.connect(comment_pre_save, sender=Comment)
