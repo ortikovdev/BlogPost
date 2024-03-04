@@ -36,3 +36,5 @@ def tag_list_page(request):
     tags = Tag.objects.all()
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+

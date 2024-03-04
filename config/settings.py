@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'article',
     'main',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 CKEDITOR_CONFIGS = {
