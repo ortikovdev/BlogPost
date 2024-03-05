@@ -4,14 +4,19 @@ from .views import (
     category_list_page,
     tag_list_page,
     top_comment_count,
+    article_detail_page,
+    article_create,
 )
+
 
 app_name = 'api'
 
 urlpatterns = [
-    path('article_list/', article_list_page, name='article-list'),
-    path('category_list/', category_list_page, name='category-list'),
-    path('tag_list/', tag_list_page, name='tag-list'),
+    path('article_list/', article_list_page, name='list'),
+    path('detail/<slug:slug>/', article_detail_page, name='detail'),
+    path('create/', article_create, name='create'),
+    path('category_list/', category_list_page, name='category'),
+    path('tag_list/', tag_list_page, name='tag'),
     path('top_commented_articles/', top_comment_count, name='top-commented-articles'),
 ] # article/api/view_name/
 
