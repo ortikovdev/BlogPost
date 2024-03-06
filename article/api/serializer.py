@@ -1,18 +1,41 @@
 from rest_framework import serializers
-from article.models import Article, Category, Tag, Author
+from article.models import Article, Content,Category, Tag, Author
 from django.utils.text import slugify
 
 
+class ContentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Content
+        fields = ['id', 'content', 'is_quote']
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'title']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'title']
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'name', 'image', 'email', 'description', 'created_date']
+
+
 class ArticleSerializer(serializers.ModelSerializer):
-    tracks = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='title'
-    )
+    content = ContentSerializer(many=True)
+    tags = TagSerializer(many=True)
+    category = CategorySerializer()
+    author = AuthorSerializer()
 
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = ['id', 'author', 'title', 'slug', 'image', 'tags', 'content', 'category', 'created_date', 'modified_date']
 
     def create(self, validated_data):
         validated_data['slug'] = slugify(validated_data['title'])
@@ -21,14 +44,3 @@ class ArticleSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if self.Meta.model.objects.filter(title=attrs['title']).exists():
             pass
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['id', 'title']

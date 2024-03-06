@@ -38,13 +38,12 @@ class Author(models.Model):
 
 
 class Article(models.Model):
-    objects = None
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='articles')
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True, related_name='authors')
+    tags = models.ManyToManyField(Tag, related_name='tags')
     title = models.CharField(max_length=255)
     slug = models.SlugField(editable=False, null=True, blank=True)
     image = models.ImageField(upload_to='articles/')
-    tags = models.ManyToManyField(Tag)
     created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     modified_date = models.DateTimeField(auto_now=True)
 
