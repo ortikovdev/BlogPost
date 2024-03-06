@@ -50,7 +50,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'image', 'created_date')
+    list_display = ('id', 'name', 'image', 'email','description', 'created_date')
     search_fields = ('name', 'article__title')
     readonly_fields = ('created_date',)
     date_hierarchy = 'created_date'

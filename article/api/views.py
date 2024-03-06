@@ -19,8 +19,8 @@ def article_list_page(request):
 
 
 @api_view(['GET'])
-def article_detail_page(request, slug):
-    object_list = get_object_or_404(Article, slug=slug)
+def article_detail_page(request, pk):
+    object_list = get_object_or_404(Article, id=pk)
     serializer = ArticleSerializer(object_list)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -28,14 +28,14 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    content = ContentSerializer(many=True)
+    # content = ContentSerializer(many=True)
     tags = TagSerializer(many=True)
     category = CategorySerializer()
     author = AuthorSerializer()
 
     class Meta:
         model = Article
-        fields = ['id', 'author', 'title', 'slug', 'image', 'tags', 'content', 'category', 'created_date', 'modified_date']
+        fields = ['id', 'author', 'title', 'slug', 'image', 'tags', 'category', 'created_date', 'modified_date']
 
     def create(self, validated_data):
         validated_data['slug'] = slugify(validated_data['title'])
@@ -44,3 +44,9 @@ class ArticleSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if self.Meta.model.objects.filter(title=attrs['title']).exists():
             pass
+
+
+class ArticleDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ['id', 'author', 'title', 'slug', 'image', 'tags', 'category', 'created_date', 'modified_date']
