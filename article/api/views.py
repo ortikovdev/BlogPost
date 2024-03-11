@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Count, Q
 from article.api.serializer import ArticleSerializer, CategorySerializer, TagSerializer
@@ -28,13 +29,13 @@ def article_detail_page(request, pk):
 @api_view(['POST'])
 def article_create(request):
     print(request.data)
-    # context = {
-    #     'user_id': request.data.id
-    # }
-    serializer = ArticleSerializer(data=request.data)
+    context = {
+        'user_id': request.data.id
+    }
+    serializer = ArticleSerializer(data=request.data, context=context)
     if serializer.is_valid():
         serializer.save()
-        obj = get_object_or_404(Article, slug=serializer.data.get('slug'))
+        obj = get_object_or_404(Article, id=serializer.data.get('id'))
         success_serializer = ArticleSerializer(obj)
         return Response(success_serializer.data, status=status.HTTP_201_CREATED)
     data = {
@@ -42,6 +43,31 @@ def article_create(request):
         'message': 'Something went wrong!'
     }
     return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def article_delete(request, pk):
+    obj = get_object_or_404(Article, id=pk)
+    obj.delete()
+    data = {
+        'success': True,
+        'message': 'Article has been deleted!'
+    }
+    return Response(data, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['PUT', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def article_update(request, pk):
+    obj = get_object_or_404(Article, id=pk)
+    data = request.data
+    partial = False
+    if request.method == 'PATCH':
+        partial = True
+    serializer = ArticleSerializer(data=data, instance=obj, partial=partial)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
